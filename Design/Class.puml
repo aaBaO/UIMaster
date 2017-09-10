@@ -1,0 +1,71 @@
+@startuml
+CustomUIViewController *-- CustomUIView
+CustomUIView <|-- UIView
+class CustomUIView{
+
+}
+
+class CustomUIViewController{
+    + CustomUIView view
+    + Destory()
+}
+
+CustomUIViewController <|-- UIViewController
+interface UIViewContorllerInterface{
+    + UIViewControllerDidLoad()
+    + OnShowView()
+    + OnHideView()
+    + OnCloseView()
+}
+
+UIViewController <|-- UIViewContorllerInterface
+class UIViewController {
+    + UIView view
+    + string viewPrefabPath
+
+    + {virtual} OnShowView()
+    + {virtual} OnHideView()
+    + {virtual} OnCloseView()
+}
+
+interface UIViewInterface{
+    + InitView()
+    + ShowView()
+    + HideView()
+    + CloseView()
+}
+
+UIViewController *-- UIView
+UIView <|-- MonoBehaviour
+UIView <|-- UIViewInterface
+class UIView{
+    + {virtual} InitView()
+    + {virtual} ShowView()
+    + {virtual} HideView()
+    + {virtual} CloseView()
+}
+
+UIMaster "1" o-- "many" UIViewController : controls
+class UIMaster {
+    --private region--
+    - mUIStack
+    - mStashUIStack
+    - OnDestory()
+
+    --public region--
+    + {static} UIMaster Instance
+    + Pop(UIViewController viewcontroller)
+    + Push(UIViewController viewcontroller, UIType type)
+    + Stash(UIViewController viewcontroller)
+    + Clear()
+}
+
+class UIDataMaster{
+
+}
+
+enum UIType{
+    Overlay
+    Replace
+}
+@enduml
